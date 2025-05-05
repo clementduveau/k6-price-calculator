@@ -173,7 +173,7 @@ function updatePriceBreakdown(priceResult) {
     });
     
     // Update total cost
-    totalVUhElement.textContent = `${priceResult.vuh}`;
+    totalVUhElement.textContent = `${priceResult.vuh.toFixed(2)}`;
     totalBilledVUhElement.textContent = `${priceResult.totalBilledVUh.toFixed(2)}`;
     totalCostElement.textContent = `$${priceResult.totalCost.toFixed(2)}`;
 }
