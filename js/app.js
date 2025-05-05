@@ -131,16 +131,13 @@ function calculateAndDisplay() {
     const { initialUsers, steps } = collectStepData();
     
     // Calculate the load profile
-    const profile = calculateLoadProfile(initialUsers, steps);
-    
-    // Calculate Virtual User Hours
-    const vuh = calculateVirtualUserHours(profile);
+    const load = calculateLoadProfile(initialUsers, steps);
     
     // Calculate price
-    const priceResult = calculatePrice(vuh);
+    const priceResult = calculatePrice(Math.max(load.maxUsers, load.maxUsers * (load.profile.length / 60)));
     
     // Update the chart
-    updateChart(profile);
+    updateChart(load.profile);
     
     // Update the price breakdown
     updatePriceBreakdown(priceResult);

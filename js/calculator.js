@@ -18,11 +18,12 @@ const DISCOUNT = [
  * Calculate the complete load profile based on the steps
  * @param {number} initialUsers - The initial number of users
  * @param {Array} steps - Array of step objects with duration and target
- * @returns {Array} - Array of minute-by-minute user counts
+ * @returns {Object} - Array of minute-by-minute user counts and max value
  */
 function calculateLoadProfile(initialUsers, steps) {
     const profile = [];
     let currentUsers = initialUsers;
+    let maxUsers = initialUsers;
 
     // Add initial users at minute 0
     profile.push({ minute: 0, users: currentUsers });
@@ -32,6 +33,9 @@ function calculateLoadProfile(initialUsers, steps) {
     // Process each step
     steps.forEach(step => {
         const { duration, target } = step;
+        if (target > maxUsers) {
+            maxUsers = target; // Update max users if target is higher
+        }
 
         // Calculate user change per minute for ramp steps
         const userChangePerMinute = (target - currentUsers) / duration;
@@ -59,34 +63,10 @@ function calculateLoadProfile(initialUsers, steps) {
         currentUsers = target;
     });
 
-    return profile;
-}
-
-/**
- * Calculate Virtual User Hours from a load profile
- * @param {Array} profile - The load profile (minute-by-minute user counts)
- * @returns {number} - Total Virtual User Hours
- */
-function calculateVirtualUserHours(profile) {
-    // If profile is empty, return 0
-    if (profile.length <= 1) return 0;
-
-    let totalUserMinutes = 0;
-
-    // Calculate user-minutes for each minute in the profile
-    for (let i = 1; i < profile.length; i++) {
-        const prevPoint = profile[i - 1];
-        const currentPoint = profile[i];
-
-        // Calculate average users in this minute (for ramp periods)
-        const avgUsers = (prevPoint.users + currentPoint.users) / 2;
-
-        // Add to total user-minutes
-        totalUserMinutes += avgUsers;
-    }
-
-    // Convert user-minutes to user-hours
-    return Math.ceil(totalUserMinutes / 60);
+    return{
+        profile,
+        maxUsers
+    };
 }
 
 /**
