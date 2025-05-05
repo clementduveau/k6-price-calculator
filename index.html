@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -7,16 +7,14 @@
     <title>Virtual User Price Calculator</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link rel="stylesheet" href="css/custom.css">
+    <link rel="icon" href="https://grafana.com/media/docs/k6/GrafanaLogo_k6_orange_icon.svg" type="image/x-icon">
 </head>
 
 <body>
     <main class="container">
-        <h1>Grafana Cloud k6 Virtual User Price Calculator</h1>
-        <p>This calculator is here to help and is in no way an official calculator !</p>
+        <h1><img style="max-width:32px" src="https://grafana.com/media/docs/k6/GrafanaLogo_k6_orange_icon.svg"
+                alt="Grafana Cloud k6" width="32" height="30"> Grafana Cloud k6 Price Calculator</h1>
         <article>
-            <header>
-                <h2>Define Load Steps</h2>
-            </header>
             <div class="step" data-step="0">
                 <h3>Initial Step</h3>
                 <div class="grid">
@@ -65,8 +63,8 @@
                         <tr>
                             <th>Tier</th>
                             <th>Virtual User Hours</th>
-                            <th>Rate</th>
-                            <th>Cost</th>
+                            <th>Rebate</th>
+                            <th>Billed VUh</th>
                         </tr>
                     </thead>
                     <tbody id="breakdown-body">
@@ -74,19 +72,51 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="3">Total</th>
-                            <td id="total-cost">$0.00</td>
+                            <th>Total</th>
+                            <td id="total-vuh">0</td>
+                            <td></td>
+                            <td id="total-billed-vuh">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Base rate</th>
+                            <th>Total price</th>
+                        </tr>
+                    </thead>
+                    <tfoot id="price-body">
+                        <tr>
+                            <td>Total</td>
+                            <td>0.15$/VUh</td>
+                            <td id="total-cost">0</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </article>
-    </main>
 
-    <footer class="container">
-        <small>Created with <a href="https://picocss.com" target="_blank">PicoCSS</a> and <a
-                href="https://www.chartjs.org/" target="_blank">Chart.js</a></small>
-    </footer>
+        <article id="knowledge">
+            <details name="disclaimer">
+                <summary role="button" class="outline">Disclaimer</summary>
+                <p>This calculator is for educational purposes only and does not represent an official pricing model.
+                    For accurate pricing, please refer to the official <a href="https://grafana.com/pricing/">Grafana
+                        Cloud pricing</a>.</p>
+            </details>
+            <details name="price">
+                <summary role="button" class="outline">"I don't have the same numbers on my bill"</summary>
+                <p>There are many reasons it can happen:
+                <ul>
+                    <li>This calculator is rounding numbers</li>
+                    <li>Billing is done by the minute, not hours</li>
+                    <li>Tests are billed for at least 1VUh (rounding up)</li>
+                </ul>
+                </p>
+            </details>
+        </article>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/calculator.js"></script>

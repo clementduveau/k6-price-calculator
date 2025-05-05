@@ -4,13 +4,14 @@
  */
 
 // Pricing tiers (in USD)
-const PRICING = [
-    { name: 'Tier 1 (0-100 VUh)', min: 0, max: 100, rate: 0.15 },
-    { name: 'Tier 2 (101-500 VUh)', min: 100, max: 500, rate: 0.12 },
-    { name: 'Tier 3 (501-1,000 VUh)', min: 500, max: 1000, rate: 0.08 },
-    { name: 'Tier 4 (1,001-5,000 VUh)', min: 1000, max: 5000, rate: 0.05 },
-    { name: 'Tier 5 (5,001-10,000 VUh)', min: 5000, max: 10000, rate: 0.04 },
-    { name: 'Tier 6 (10,001+ VUh)', min: 10000, max: Number.MAX_VALUE, rate: 0.03 }
+const BASE_PRICE = 0.15; // Base price per VUh
+const DISCOUNT = [
+    { name: 'Tier 1 (0-100 VUh)', min: 0, max: 100, rate: 1 },
+    { name: 'Tier 2 (101-500 VUh)', min: 100, max: 500, rate: 0.8 },
+    { name: 'Tier 3 (501-1,000 VUh)', min: 500, max: 1000, rate: 0.5333 },
+    { name: 'Tier 4 (1,001-5,000 VUh)', min: 1000, max: 5000, rate: 0.3333 },
+    { name: 'Tier 5 (5,001-10,000 VUh)', min: 5000, max: 10000, rate: 0.2667 },
+    { name: 'Tier 6 (10,001+ VUh)', min: 10000, max: Number.MAX_VALUE, rate: 0.2 }
 ];
 
 /**
@@ -35,7 +36,6 @@ function calculateLoadProfile(initialUsers, steps) {
         // Calculate user change per minute for ramp steps
         const userChangePerMinute = (target - currentUsers) / duration;
         const startingUsers = currentUsers;
-        console.log(`User change per minute for step: ${userChangePerMinute}. Because we are at ${currentUsers} and going to ${target} in ${duration} minutes.`);
 
         // Add each minute in this step to the profile
         for (let i = 1; i <= duration; i++) {
@@ -46,7 +46,6 @@ function calculateLoadProfile(initialUsers, steps) {
                 // For last minute use the exact target value
                 if (i === duration) {
                     currentUsers = target; // No rounding error here
-                    console.log(`Final minute reached. User count now: ${currentUsers}`);
                 } else {
                     // For other minutes, use the per-minute change
                     currentUsers = Math.round(startingUsers + (userChangePerMinute * i));
@@ -93,39 +92,43 @@ function calculateVirtualUserHours(profile) {
 /**
  * Calculate price based on Virtual User Hours and tiered pricing
  * @param {number} vuh - Virtual User Hours
- * @returns {Object} - Breakdown of costs by tier and total
+ * @returns {Object} - Breakdown of costs by tier and total billed VUh & public cost
  */
 function calculatePrice(vuh) {
     const breakdown = [];
-    let totalCost = 0;
-
-    console.log(`Calculating price for ${vuh} VUh`);
-    PRICING.forEach(tier => {
+    let totalBilledVUh = 0;
+    
+    DISCOUNT.forEach(tier => {
         if (vuh > tier.max) {
             const tierHours = tier.max - tier.min;
-            const tierCost = tierHours * tier.rate;
+            const tierBilled = tierHours * tier.rate;
             breakdown.push({
                 tier: `${tier.name}`,
                 hours: tierHours.toFixed(0),
-                rate: `$${tier.rate.toFixed(2)}/VUh`,
-                cost: tierCost.toFixed(2)
+                rebate: `${((1 - tier.rate)*100).toFixed(2)}%`,
+                billed: tierBilled.toFixed(2)
             });
-            totalCost += tierCost;
+            totalBilledVUh += tierBilled;
         }
         else if (vuh > tier.min) {
             const tierHours = vuh - tier.min;
-            const tierCost = tierHours * tier.rate;
+            const tierBilled = tierHours * tier.rate;
             breakdown.push({
                 tier: `${tier.name}`,
                 hours: tierHours.toFixed(0),
-                rate: `$${tier.rate.toFixed(2)}/VUh`,
-                cost: tierCost.toFixed(2)
+                rebate: `${((1 - tier.rate)*100).toFixed(2)}%`,
+                billed: tierBilled.toFixed(2)
             });
-            totalCost += tierCost;
+            totalBilledVUh += tierBilled;
         }
     });
+    
+    let totalCost = totalBilledVUh * BASE_PRICE;
+    
     return {
         breakdown,
-        totalCost: totalCost.toFixed(2)
+        vuh,
+        totalBilledVUh,
+        totalCost
     };
 }

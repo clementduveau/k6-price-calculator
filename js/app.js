@@ -9,7 +9,10 @@ const addStepButton = document.getElementById('add-step');
 const calculateButton = document.getElementById('calculate');
 const resultsSection = document.getElementById('results');
 const breakdownBody = document.getElementById('breakdown-body');
+const totalVUhElement = document.getElementById('total-vuh');
 const totalCostElement = document.getElementById('total-cost');
+const totalBilledVUhElement = document.getElementById('total-billed-vuh');
+
 
 // Step counter
 let stepCounter = 0;
@@ -165,15 +168,17 @@ function updatePriceBreakdown(priceResult) {
         row.innerHTML = `
             <td>${tier.tier}</td>
             <td>${tier.hours}</td>
-            <td>${tier.rate}</td>
-            <td>$${tier.cost}</td>
+            <td>${tier.rebate}</td>
+            <td>${tier.billed}</td>
         `;
         
         breakdownBody.appendChild(row);
     });
     
     // Update total cost
-    totalCostElement.textContent = `$${priceResult.totalCost}`;
+    totalVUhElement.textContent = `${priceResult.vuh}`;
+    totalBilledVUhElement.textContent = `${priceResult.totalBilledVUh.toFixed(2)}`;
+    totalCostElement.textContent = `$${priceResult.totalCost.toFixed(2)}`;
 }
 
 /**

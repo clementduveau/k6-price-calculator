@@ -1,5 +1,93 @@
 /* Custom styles for the Virtual User Price Calculator */
 
+:root,
+:host {
+  --pico-font-family-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --pico-font-family-sans-serif: inter, sans-serif;
+}
+
+[data-theme=light],
+:root:not([data-theme=dark]),
+:host(:not([data-theme=dark])) {
+color-scheme: light;
+--pico-background-color: #fff;
+--pico-color: #373c44;
+--pico-text-selection-color: rgba(2, 154, 232, 0.25);
+--pico-muted-color: #646b79;
+--pico-muted-border-color: rgb(231, 234, 239.5);
+--pico-primary: #1866d4;
+--pico-primary-background: #1866d4;
+--pico-primary-border: var(--pico-primary-background);
+--pico-primary-underline: rgba(1, 114, 173, 0.5);
+--pico-primary-hover: #3d7bd9;
+--pico-primary-hover-background: #3d7bd9;
+--pico-primary-hover-border: var(--pico-primary-hover-background);
+--pico-primary-hover-underline: var(--pico-primary-hover);
+--pico-primary-focus: rgba(2, 154, 232, 0.5);
+--pico-primary-inverse: #fff;
+}
+
+/* inter-regular - latin */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-regular.svg#Inter') format('svg'); /* Legacy iOS */
+  }
+  
+  /* inter-500 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.woff') format('woff'), /* Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-500.svg#Inter') format('svg'); /* Legacy iOS */
+  }
+  
+  /* inter-600 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.woff') format('woff'), /* Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-600.svg#Inter') format('svg'); /* Legacy iOS */
+  }
+  
+  /* inter-700 - latin */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.woff') format('woff'), /* Modern Browsers */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('https://grafana.com/web/fonts/inter/inter-v3-latin-700.svg#Inter') format('svg'); /* Legacy iOS */
+  }
+  
+
 /* General styles */
 .hidden {
     display: none !important;
