@@ -95,7 +95,7 @@ function calculatePrice(vuh) {
             const tierBilled = tierHours * tier.rate;
             breakdown.push({
                 tier: `${tier.name}`,
-                hours: tierHours.toFixed(0),
+                hours: tierHours.toFixed(2),
                 rebate: `${((1 - tier.rate)*100).toFixed(2)}%`,
                 billed: tierBilled.toFixed(2)
             });
