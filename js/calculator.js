@@ -18,7 +18,7 @@ const DISCOUNT = [
  * Calculate the complete load profile based on the steps
  * @param {number} initialUsers - The initial number of users
  * @param {Array} steps - Array of step objects with duration and target
- * @returns {Object} - Array of minute-by-minute user counts and max value
+ * @returns {Object} - Array of minute-by-minute user counts, max VUs, and total duration
  */
 function calculateLoadProfile(initialUsers, steps) {
     const profile = [];
@@ -63,20 +63,29 @@ function calculateLoadProfile(initialUsers, steps) {
         currentUsers = target;
     });
 
+    let totalDuration = 0;
+    steps.forEach(step => {
+        totalDuration += step.duration;
+    });
+
     return{
         profile,
-        maxUsers
+        maxUsers,
+        totalDuration
     };
 }
 
 /**
  * Calculate price based on Virtual User Hours and tiered pricing
- * @param {number} vuh - Virtual User Hours
- * @returns {Object} - Breakdown of costs by tier and total billed VUh & public cost
+ * @param {number} vu - Virtual User
+ * @param {number} duration - Duration in minutes
+ * @returns {Object} - Breakdown of costs by tier, total VUh, total billed VUh & total cost
  */
-function calculatePrice(vuh) {
+function calculatePrice(vu, duration) {
     const breakdown = [];
     let totalBilledVUh = 0;
+
+    vuh = Math.max(1, (vu * duration) / 60); // Convert to VUh (Virtual User Hours) with a minimum of 1 VUh
     
     DISCOUNT.forEach(tier => {
         if (vuh > tier.max) {
