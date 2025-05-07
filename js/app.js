@@ -134,7 +134,7 @@ function calculateAndDisplay() {
     const load = calculateLoadProfile(initialUsers, steps);
     
     // Calculate price
-    const priceResult = calculatePrice(Math.max(load.maxUsers, load.maxUsers * (load.profile.length / 60)));
+    const priceResult = calculatePrice(Math.max(1, (load.maxUsers * load.profile.length) / 60));
     
     // Update the chart
     updateChart(load.profile);
